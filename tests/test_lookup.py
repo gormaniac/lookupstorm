@@ -1,0 +1,61 @@
+"""Pytest suites for lookupstorm."""
+
+import os
+
+import synapse.tests.utils as s_test
+
+
+DIRNAME = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
+
+
+class LookupTest(s_test.StormPkgTest):
+    """Tests for lookupstorm."""
+
+    pkgprotos = (os.path.join(DIRNAME, "lookup-storm.yaml"),)
+
+    async def test_lookup_queries(self):
+        """Individually test all possible valid values for a lookup command."""
+
+        async with self.getTestCore() as core:
+            queries = [
+                'lookup "::1234:5678"',
+                'lookup "::"',
+                'lookup "2001:db8:3333:4444:5555:6666:7777:8888"',
+                'lookup "da39a3ee5e6b4b0d3255bfef95601890afd80709"',
+                'lookup "d41d8cd98f00b204e9800998ecf8427e"',
+                "lookup 1.1.1.1",
+                'lookup "1.1.0.0/24"',
+                'lookup "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"',
+                'lookup "c:/a/path/to/test.exe"',
+                r'lookup "C:\Windows\System32\calc.exe"',
+                'lookup http://example.com',
+                'lookup tcp://1.1.1.1:80',
+            ]
+
+            for query in queries:
+                msgs = await core.stormlist(query)
+                print([m[1] for m in msgs if m[0] == "node"])
+                self.stormHasNoWarnErr(msgs)
+
+    async def test_lookup_multi(self):
+        """Multiple inputs to a lookup command."""
+
+        async with self.getTestCore() as core:
+            queries = [
+                (
+                    'lookup 1.1.1.1 "1.1.0.0/24" "2001:db8:3333:4444:5555:6666:7777:8888" '
+                    '"::1234:5678" "::" 8.8.8.8 123.123.123.123 example.com "test@example.com"'
+                ),
+                """lookup 
+                d41d8cd98f00b204e9800998ecf8427e
+                da39a3ee5e6b4b0d3255bfef95601890afd80709
+                e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+                """,
+                r'lookup d41d8cd98f00b204e9800998ecf8427e "1.1.1.1" "C:\Windows\System32\calc.exe"',
+                'lookup http://example.com tcp://1.1.1.1:80',
+            ]
+
+            for query in queries:
+                msgs = await core.stormlist(query)
+                print([m[1] for m in msgs if m[0] == "node"])
+                self.stormHasNoWarnErr(msgs)

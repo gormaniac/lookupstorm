@@ -1,0 +1,8 @@
+init {
+    $lookupLib = $lib.import(lookup.lib)
+    $inputItems = $cmdopts.items
+}
+
+for $item in $inputItems {
+    yield $lookupLib.lookupOrCreate($item)
+}
