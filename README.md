@@ -39,5 +39,5 @@ lookup http://example.com tcp://1.1.1.1:80
 
 Install this package in Synapse by running the following Storm command:
 ```
-pkg.load --raw https://github.com/gormaniac/lookupstorm/blob/main/lookup-storm.json
+pkg.load --raw https://raw.githubusercontent.com/gormaniac/lookupstorm/main/lookup-storm.json
 ```
