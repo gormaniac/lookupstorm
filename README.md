@@ -32,4 +32,6 @@ file:path
 # Installation
 
 Install this package in Synapse by running the following Storm command:
-```pkg.load --raw https://github.com/gormaniac/lookupstorm/blob/main/lookup-storm.json```
+```
+pkg.load --raw https://github.com/gormaniac/lookupstorm/blob/main/lookup-storm.json
+```
