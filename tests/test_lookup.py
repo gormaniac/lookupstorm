@@ -59,3 +59,27 @@ class LookupTest(s_test.StormPkgTest):
                 msgs = await core.stormlist(query)
                 print([m[1] for m in msgs if m[0] == "node"])
                 self.stormHasNoWarnErr(msgs)
+
+    async def test_lookup_read_only_empty(self):
+        """Test the --read-only flag."""
+
+        async with self.getTestCore() as core:
+            query = "lookup --read-only http://example.com tcp://1.1.1.1:80"
+
+            msgs = await core.stormlist(query)
+            assert [m[1] for m in msgs if m[0] == "node"] == []
+            self.stormHasNoWarnErr(msgs)
+
+    async def test_lookup_read_only(self):
+        """Test the --read-only flag."""
+
+        async with self.getTestCore() as core:
+            query1 = "[inet:server=tcp://1.1.1.1:80]"
+
+            await core.stormlist(query1)
+
+            query2 = "lookup --read-only http://example.com tcp://1.1.1.1:80"
+            msgs = await core.stormlist(query2)
+
+            assert len([m[1] for m in msgs if m[0] == "node"]) == 1
+            self.stormHasNoWarnErr(msgs)

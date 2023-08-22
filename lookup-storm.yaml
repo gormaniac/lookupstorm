@@ -1,5 +1,5 @@
 name: lookup-storm
-version: 0.1.0
+version: 0.2.0
 guid: c11ed838aeda991409415059e3b5beb2
 
 synapse_minversion: [2, 127, 0]
@@ -50,6 +50,12 @@ commands:
           nargs: +
           help: |
             The items to lookup.
+
+      - - --read-only
+        - type: bool
+          default: false
+          action: store_true
+          help: Don't create nodes if they don't already exist.
     
     forms:
       input: []

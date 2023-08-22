@@ -53,3 +53,20 @@ function lookupOrCreate(item) {
 
     return ( $node )
 }
+
+// A version of lookupOrCreate that doesn't create nodes
+function lookupOnly(item) {
+    hash:md5?=$item
+    hash:sha1?=$item
+    hash:sha256?=$item
+    inet:cidr4?=$item
+    inet:ipv4?=$item
+    inet:ipv6?=$item
+    inet:fqdn?=$item
+    inet:email?=$item
+    inet:server?=$item
+    inet:url?=$item
+    file:path?=$item
+
+    return ( $node )
+}
