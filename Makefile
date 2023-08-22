@@ -6,7 +6,7 @@ help: # Display help for all Makefile commands
 
 .PHONY: build
 build: # Build the Rapid Power-Up using "synapse.tools.genpkg"
-	pipenv run python3 -m synapse.tools.genpkg --no-docs --save $(NAME).json $(name).yaml
+	pipenv run python3 -m synapse.tools.genpkg --no-docs --save $(NAME).json $(NAME).yaml
 
 .PHONY: push
 push: # Push the completed Rapid Power-Up's JSON file to a Cortex (requires CORTEX=<Telepath URL>)
